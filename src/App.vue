@@ -2,8 +2,9 @@
 import { useGithub } from './composables/useGithub'
 import SearchGithubUser from './components/SearchGithubUser.vue'
 import ProfileCard from './components/ProfileCard.vue'
+import RepositoryList from './components/RepositoryList.vue'
 
-const { profile, loading, fetchUser } = useGithub()
+const { profile, repos, error, loading, fetchUser } = useGithub()
 
 function handleSearch(username: string): void {
   fetchUser(username)
@@ -18,9 +19,12 @@ function handleSearch(username: string): void {
     <SearchGithubUser :onSearch="handleSearch" />
 
     <p v-if="loading" class="text-gray-500 mt-2">Loading...</p>
+    <p v-if="error" class="text-red-500 mt-2">{{ error }}</p>
    
 
     <ProfileCard :profile="profile" />
+
+    <RepositoryList :repos="repos" />
   </div>
 </template>
 
