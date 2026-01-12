@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { onMounted } from 'vue'
 import { useGithub } from './composables/useGithub'
 import SearchGithubUser from './components/SearchGithubUser.vue'
 import ProfileCard from './components/ProfileCard.vue'
@@ -7,8 +8,23 @@ import RepositoryList from './components/RepositoryList.vue'
 const { profile, repos, error, loading, fetchUser } = useGithub()
 
 function handleSearch(username: string): void {
-  fetchUser(username)
+  const trimmed = username.trim()
+  if (!trimmed) return
+  
+  const url = new URL(window.location.href)
+  url.searchParams.set('user', trimmed)
+  window.history.pushState({}, '', url)
+  
+  fetchUser(trimmed)
 }
+
+onMounted(() => {
+  const params = new URLSearchParams(window.location.search)
+  const username = params.get('user')
+  if (username && username.trim()) {
+    fetchUser(username.trim())
+  }
+})
 </script>
 
 <template>

@@ -36,7 +36,7 @@ export function useGithub() {
       const response = await axios.get<GithubProfile>(`https://api.github.com/users/${username}`);
       profile.value = response.data;
 
-      const repoResponse = await axios.get<GithubRepo[]>(`https://api.github.com/users/${username}/repos?per_page=100`);
+      const repoResponse = await axios.get<GithubRepo[]>(`https://api.github.com/users/${username}/repos`);
       repos.value = repoResponse.data;
     } catch {
       error.value = 'User not found';
