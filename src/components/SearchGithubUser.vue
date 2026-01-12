@@ -14,7 +14,7 @@
 </template>
     
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 
 const props = defineProps<{ onSearch: (username: string) => void }>();
 const username = ref('');
@@ -24,6 +24,14 @@ function searchUser(): void {
     props.onSearch(username.value.trim());
   }
 }
+
+onMounted(() => {
+  const params = new URLSearchParams(window.location.search)
+  const user = params.get('user')
+  if (user && user.trim()) {
+    username.value = user.trim()
+  }
+})
 </script>
 
 
